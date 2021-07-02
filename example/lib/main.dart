@@ -34,7 +34,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final textConstructor = TextConstructor1();
   Player? player;
-  TextToSpeechService _service = TextToSpeechService('your api key');
+  TextToSpeechService _service =
+      TextToSpeechService('AIzaSyBR0FzxZuCpSRT7TVembrDSdyiy8wzYniU');
   AudioPlayer _audioPlayer = AudioPlayer();
 
   @override

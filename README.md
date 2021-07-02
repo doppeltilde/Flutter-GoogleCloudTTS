@@ -12,7 +12,7 @@ This is a fork of https://pub.dartlang.org/packages/text_to_speech_api which fix
 dependencies:
   flutter:
     sdk: flutter
-  wavenet: ^2.0.0
+  wavenet: ^2.0.1
 ```
 
 - Initialize the TextToSpeechService (optional: provide your api key)

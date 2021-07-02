@@ -1,7 +1,8 @@
 name: wavenet
 description: A simple wrapper for accessing Google's Text-To-Spech API and converting the results to MP3 files.
-version: 2.0.0
-homepage: https://www.lucademmel.com
+version: 2.0.1
+homepage: https://github.com/jonafeucht/Flutter-WaveNet-API
+repository: https://github.com/jonafeucht/Flutter-WaveNet-API
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
