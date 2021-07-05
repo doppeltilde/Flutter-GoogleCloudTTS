@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:example/apikey.dart';
 import 'package:example/speech/speechText.dart';
 import 'package:flutter/material.dart';
 import 'package:wavenet/wavenet.dart';
@@ -34,8 +35,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final textConstructor = TextConstructor1();
   Player? player;
-  TextToSpeechService _service =
-      TextToSpeechService('AIzaSyBR0FzxZuCpSRT7TVembrDSdyiy8wzYniU');
+  TextToSpeechService _service = TextToSpeechService(getAPIKEY());
   AudioPlayer _audioPlayer = AudioPlayer();
 
   @override
@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
       );
       if (UniversalPlatform.isWindows || UniversalPlatform.isLinux) {
         print(file.path);
-        await player?.open(
+        player?.open(
           await Media.file(File(file.path)),
         );
       } else {
@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
       );
       if (UniversalPlatform.isWindows || UniversalPlatform.isLinux) {
         print(file.path);
-        await player?.open(
+        player?.open(
           await Media.file(File(file.path)),
         );
       } else {
@@ -93,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
       );
       if (UniversalPlatform.isWindows || UniversalPlatform.isLinux) {
         print(file.path);
-        await player?.open(
+        player?.open(
           await Media.file(File(file.path)),
         );
       } else {
@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
       );
       if (UniversalPlatform.isWindows || UniversalPlatform.isLinux) {
         print(file.path);
-        await player?.open(
+        player?.open(
           await Media.file(File(file.path)),
         );
       } else {
