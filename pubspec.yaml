@@ -13,6 +13,7 @@ dependencies:
   http: ">=0.13.3 <1.0.0"
   path_provider: ">=2.0.2 <3.0.0"
   dart_vlc: ">=0.0.8 <1.0.0"
+  dart_vlc_ffi: ">=0.0.4 <1.0.0"
   universal_platform: ">=1.0.0+1 <2.0.0"
 
 flutter:
