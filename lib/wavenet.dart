@@ -78,6 +78,7 @@ class TextToSpeechService {
     String body =
         '{"input": {"text":"$text"},"voice": {"languageCode": "$languageCode", "name": "$voiceName"},"audioConfig": {"audioEncoding": "$audioEncoding"}}';
     Future request = http.post(_getApiUrl(endpoint), body: body);
+
     try {
       var response =
           await _getResponse(request.then((value) => value as http.Response));
