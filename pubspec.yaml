@@ -6,6 +6,7 @@ repository: https://github.com/jonafeucht/Flutter-WaveNet-API
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
+  flutter: ">=1.22.0"
 
 dependencies:
   flutter:
@@ -15,3 +16,10 @@ dependencies:
   path_provider: ">=2.0.9 <=3.0.0"
 
 flutter:
+  plugin:
+    platforms:
+      android:
+        package: de.smalldreams.wavenet
+        pluginClass: WavenetPlugin
+      ios:
+        pluginClass: WavenetPlugin
