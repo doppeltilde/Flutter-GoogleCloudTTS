@@ -1,12 +1,10 @@
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:example/apikey.dart';
-import 'package:example/speech/speechText.dart';
+import 'package:example/key.dart';
+import 'package:example/speech/speech_text.dart';
 import 'package:flutter/material.dart';
 import 'package:wavenet/wavenet.dart';
-import 'package:universal_platform/universal_platform.dart';
-import 'package:dart_vlc/dart_vlc.dart';
 
 void main() => runApp(MyApp());
 
@@ -34,19 +32,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final textConstructor = TextConstructor1();
-  Player? player;
-  TextToSpeechService _service = TextToSpeechService(getAPIKEY());
+  TextToSpeechService _service = TextToSpeechService(apiKey);
   AudioPlayer _audioPlayer = AudioPlayer();
-
-  @override
-  void didChangeDependencies() {
-    if (UniversalPlatform.isWindows || UniversalPlatform.isLinux) {
-      super.didChangeDependencies();
-      player = Player(
-        id: 0,
-      );
-    }
-  }
 
   /// https://cloud.google.com/text-to-speech/docs/voices
 
@@ -57,62 +44,50 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
     print(textConstructor.getCharacterName());
-    if (textConstructor.getCharacterName()!.contains("Catallia")) {
-      File file = await _service.textToSpeech(
-        text: textConstructor.getCharacterText().toString(),
-        voiceName: "en-US-Wavenet-C",
-        languageCode: "en-EN",
-      );
-      if (UniversalPlatform.isWindows || UniversalPlatform.isLinux) {
-        print(file.path);
-        player?.open(
-          await Media.file(File(file.path)),
+    switch (textConstructor.getCharacterName()) {
+      case "Admiral Venesca Catallia":
+        File file = await _service.textToSpeech(
+          text: textConstructor.getCharacterText().toString(),
+          voiceName: "en-US-Wavenet-C",
+          languageCode: "en-EN",
         );
-      } else {
+
         _audioPlayer.play(file.path, isLocal: true);
-      }
-    } else if (textConstructor.getCharacterName()!.contains("Razim")) {
-      File file = await _service.textToSpeech(
-        text: textConstructor.getCharacterText().toString(),
-        voiceName: "en-US-Wavenet-J",
-        languageCode: "en-EN",
-      );
-      if (UniversalPlatform.isWindows || UniversalPlatform.isLinux) {
-        print(file.path);
-        player?.open(
-          await Media.file(File(file.path)),
+        break;
+      case "Major Razim":
+        File file = await _service.textToSpeech(
+          text: textConstructor.getCharacterText().toString(),
+          voiceName: "en-AU-Wavenet-D",
+          languageCode: "en-AU",
         );
-      } else {
         _audioPlayer.play(file.path, isLocal: true);
-      }
-    } else if (textConstructor.getCharacterName()!.contains("Trevaux")) {
-      File file = await _service.textToSpeech(
-        text: textConstructor.getCharacterText().toString(),
-        voiceName: "en-GB-Wavenet-D",
-        languageCode: "en-GB",
-      );
-      if (UniversalPlatform.isWindows || UniversalPlatform.isLinux) {
-        print(file.path);
-        player?.open(
-          await Media.file(File(file.path)),
+        break;
+      case "Captain severin":
+        File file = await _service.textToSpeech(
+          text: textConstructor.getCharacterText().toString(),
+          voiceName: "en-US-Wavenet-J",
+          languageCode: "en-EN",
         );
-      } else {
+
         _audioPlayer.play(file.path, isLocal: true);
-      }
-    } else {
-      File file = await _service.textToSpeech(
-        text: textConstructor.getCharacterText().toString(),
-        voiceName: "en-US-Wavenet-I",
-        languageCode: "en-EN",
-      );
-      if (UniversalPlatform.isWindows || UniversalPlatform.isLinux) {
-        print(file.path);
-        player?.open(
-          await Media.file(File(file.path)),
+        break;
+      case "Commodore Trevaux":
+        File file = await _service.textToSpeech(
+          text: textConstructor.getCharacterText().toString(),
+          voiceName: "en-GB-Wavenet-D",
+          languageCode: "en-GB",
         );
-      } else {
+
         _audioPlayer.play(file.path, isLocal: true);
-      }
+        break;
+      default:
+        File file = await _service.textToSpeech(
+          text: textConstructor.getCharacterText().toString(),
+          voiceName: "en-AU-Wavenet-D",
+          languageCode: "en-AU",
+        );
+
+        _audioPlayer.play(file.path, isLocal: true);
     }
   }
 
@@ -126,12 +101,11 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'Press the play button to speak a demo text.',
-            ),
-            Text(
-              'Hi',
-              style: Theme.of(context).textTheme.headline4,
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                textConstructor.getCharacterText()!,
+              ),
             ),
           ],
         ),
@@ -139,8 +113,8 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _playDemo,
         tooltip: 'Play Demo',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        child: Icon(Icons.arrow_right_alt_outlined),
+      ),
     );
   }
 }

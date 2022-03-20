@@ -104,3 +104,4 @@ linux/
 macos/
 windows/
 example/lib/apikey.dart
+example/lib/key.dart

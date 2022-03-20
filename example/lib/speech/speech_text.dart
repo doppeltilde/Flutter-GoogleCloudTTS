@@ -1,4 +1,4 @@
-import 'package:example/speech/coreSpeech.dart';
+import 'package:example/speech/core_speech.dart';
 
 class TextConstructor1 {
   int textNumber = 0;
@@ -14,6 +14,10 @@ class TextConstructor1 {
   List<Speech> textBank = [
     // Name, Speech, Voice, Image
     Speech(
+      characterName: severin,
+      characterText: "...",
+    ),
+    Speech(
         characterName: severin,
         characterText: "Admiral! This is madness!",
         voice: "silence"),
@@ -26,10 +30,10 @@ class TextConstructor1 {
 
     Speech(
         characterName: catallia,
-        characterText: "A good officer commands without doubt..."),
+        characterText: "A good officer commands without doubt…"),
     Speech(
       characterName: catallia,
-      characterText: "and obeys without question.",
+      characterText: "…and obeys without question.",
     ),
     Speech(
       characterName: razim,
@@ -37,11 +41,7 @@ class TextConstructor1 {
     ),
     Speech(
       characterName: severin,
-      characterText: "Blessed Emperor!",
-    ),
-    Speech(
-      characterName: severin,
-      characterText: "We're in the heart of the fight!",
+      characterText: "Blessed Emperor! We're in the heart of the fight!",
     ),
     Speech(
       characterName: catallia,
