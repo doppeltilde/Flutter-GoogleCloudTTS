@@ -1,4 +1,4 @@
-// Copyright (c) 2021 The SmallDreams Authors.
+// Copyright (c) 2021 The KeeWee Authors.
 
 class Speech {
   final String? characterName;

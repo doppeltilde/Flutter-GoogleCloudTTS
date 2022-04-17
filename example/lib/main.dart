@@ -3,26 +3,30 @@ import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:example/key.dart';
 import 'package:example/speech/speech_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wavenet/wavenet.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Text To Speech Example'),
+      home: const MyHomePage(title: 'Text To Speech Example'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title}) : super(key: key);
+  const MyHomePage({Key? key, this.title}) : super(key: key);
 
   final String? title;
 
@@ -32,18 +36,26 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final textConstructor = TextConstructor1();
-  TextToSpeechService _service = TextToSpeechService(apiKey);
-  AudioPlayer _audioPlayer = AudioPlayer();
+  final TextToSpeechService _service = TextToSpeechService(apiKey);
+  final audioPlayer = AudioPlayer();
 
   /// https://cloud.google.com/text-to-speech/docs/voices
+
+  getAudioPlayer(file) {
+    audioPlayer.play(DeviceFileSource(file));
+  }
 
   _playDemo() async {
     setState(() {
       if (textConstructor.isFinished() != true) {
         textConstructor.nextQuestion();
+      } else {
+        textConstructor.reset();
       }
     });
-    print(textConstructor.getCharacterName());
+    if (kDebugMode) {
+      print(textConstructor.getCharacterName());
+    }
     switch (textConstructor.getCharacterName()) {
       case "Admiral Venesca Catallia":
         File file = await _service.textToSpeech(
@@ -52,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
           languageCode: "en-EN",
         );
 
-        _audioPlayer.play(file.path, isLocal: true);
+        getAudioPlayer(file.path);
         break;
       case "Major Razim":
         File file = await _service.textToSpeech(
@@ -60,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
           voiceName: "en-AU-Wavenet-D",
           languageCode: "en-AU",
         );
-        _audioPlayer.play(file.path, isLocal: true);
+        getAudioPlayer(file.path);
         break;
       case "Captain severin":
         File file = await _service.textToSpeech(
@@ -69,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
           languageCode: "en-EN",
         );
 
-        _audioPlayer.play(file.path, isLocal: true);
+        getAudioPlayer(file.path);
         break;
       case "Commodore Trevaux":
         File file = await _service.textToSpeech(
@@ -78,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
           languageCode: "en-GB",
         );
 
-        _audioPlayer.play(file.path, isLocal: true);
+        getAudioPlayer(file.path);
         break;
       default:
         File file = await _service.textToSpeech(
@@ -87,25 +99,33 @@ class _MyHomePageState extends State<MyHomePage> {
           languageCode: "en-AU",
         );
 
-        _audioPlayer.play(file.path, isLocal: true);
+        getAudioPlayer(file.path);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(widget.title!),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Text(widget.title!, style: const TextStyle(color: Colors.black)),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                textConstructor.getCharacterText()!,
-              ),
+            Text(
+              textConstructor.getCharacterName()!.toUpperCase(),
+              style:
+                  const TextStyle(fontSize: 17.5, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              textConstructor.getCharacterText()!,
+              style: const TextStyle(fontSize: 17.5),
             ),
           ],
         ),
@@ -113,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _playDemo,
         tooltip: 'Play Demo',
-        child: Icon(Icons.arrow_right_alt_outlined),
+        child: const Icon(Icons.arrow_right_alt_outlined),
       ),
     );
   }

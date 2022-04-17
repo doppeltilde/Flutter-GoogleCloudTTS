@@ -1,9 +1,15 @@
 # wavenet
+
 [![pub package](https://img.shields.io/pub/v/wavenet.svg)](https://pub.dartlang.org/packages/wavenet)
 
-A simple wrapper for Google's [Text-To-Spech API](https://cloud.google.com/text-to-speech). Simply list the available voices and convert your text to a mp3 by providing your API key, language code and voicename.
+A simple wrapper for Google's
+[Text-To-Spech API](https://cloud.google.com/text-to-speech). Simply list the
+available voices and convert your text to a mp3 by providing your API key,
+language code and voicename.
 
-This is a fork of https://pub.dartlang.org/packages/text_to_speech_api which fixes stuff.
+This is a fork of https://pub.dartlang.org/packages/text_to_speech_api which
+fixes stuff.
+
 ## Usage
 
 - add the package as a dependency to your `pubspec.yaml` file:
@@ -12,7 +18,7 @@ This is a fork of https://pub.dartlang.org/packages/text_to_speech_api which fix
 dependencies:
   flutter:
     sdk: flutter
-  wavenet: ^2.0.1
+  wavenet: ^2.0.4
 ```
 
 - Initialize the TextToSpeechService (optional: provide your api key)
