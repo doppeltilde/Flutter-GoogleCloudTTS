@@ -16,3 +16,6 @@ dependencies:
   path_provider: ">=2.0.9 <=3.0.0"
 
 flutter:
+
+false_secrets:
+  - example/lib/main.dart
