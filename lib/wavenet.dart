@@ -1,8 +1,9 @@
 library text_to_speech_api;
 
-import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
@@ -69,14 +70,31 @@ class TextToSpeechService {
     }
   }
 
-  Future<File> textToSpeech(
-      {required String text,
-      String voiceName = 'de-DE-Wavenet-D',
-      String audioEncoding = 'MP3',
-      String languageCode = 'de-DE'}) async {
+  Future<File> textToSpeech({
+    required String text,
+    String voiceName = 'de-DE-Wavenet-D',
+    String audioEncoding = 'MP3',
+    String languageCode = 'de-DE',
+    double pitch = 0.00,
+    double speakingRate = 1.00,
+  }) async {
     const endpoint = 'text:synthesize';
-    String body =
-        '{"input": {"text":"$text"},"voice": {"languageCode": "$languageCode", "name": "$voiceName"},"audioConfig": {"audioEncoding": "$audioEncoding"}}';
+    final bodyMap = <String, dynamic>{
+      "input": {
+        "text": text,
+      },
+      "voice": {
+        "languageCode": languageCode,
+        "name": voiceName,
+      },
+      "audioConfig": {
+        "audioEncoding": audioEncoding,
+        "pitch": pitch,
+        "speakingRate": speakingRate,
+      },
+    };
+
+    String body = jsonEncode(bodyMap);
     Future request = http.post(_getApiUrl(endpoint), body: body);
 
     try {
