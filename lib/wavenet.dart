@@ -70,11 +70,14 @@ class TextToSpeechService {
     }
   }
 
-  Future<File> textToSpeech(
-      {required String text,
-      String voiceName = 'de-DE-Wavenet-D',
-      String audioEncoding = 'MP3',
-      String languageCode = 'de-DE'}) async {
+  Future<File> textToSpeech({
+    required String text,
+    String voiceName = 'de-DE-Wavenet-D',
+    String audioEncoding = 'MP3',
+    String languageCode = 'de-DE',
+    double pitch = 0.00,
+    double speakingRate = 1.00,
+  }) async {
     const endpoint = 'text:synthesize';
     final bodyMap = <String, dynamic>{
       "input": {
@@ -86,6 +89,8 @@ class TextToSpeechService {
       },
       "audioConfig": {
         "audioEncoding": audioEncoding,
+        "pitch": pitch,
+        "speakingRate": speakingRate,
       },
     };
 
