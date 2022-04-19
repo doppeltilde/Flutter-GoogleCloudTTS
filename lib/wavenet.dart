@@ -72,11 +72,27 @@ class TextToSpeechService {
 
   Future<File> textToSpeech({
     required String text,
+
+    /// Voice name.
+    ///
+    /// See https://cloud.google.com/text-to-speech/docs/voices for more info.
     String voiceName = 'de-DE-Wavenet-D',
+
+    /// Country language code.
+    ///
+    /// See https://cloud.google.com/text-to-speech/docs/voices for more info.
     String audioEncoding = 'MP3',
+
+    /// Country language code.
+    ///
+    /// See https://cloud.google.com/text-to-speech/docs/voices for more info.
     String languageCode = 'de-DE',
-    double pitch = 0.00,
-    double speakingRate = 1.00,
+
+    /// Pitch the voice.
+    ///
+    /// Ranges from -20 to 20.
+    double pitch = 0.0,
+    double speakingRate = 1.0,
   }) async {
     const endpoint = 'text:synthesize';
     final bodyMap = <String, dynamic>{
