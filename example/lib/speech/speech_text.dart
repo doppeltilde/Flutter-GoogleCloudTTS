@@ -116,6 +116,11 @@ class TextConstructor1 {
     ),
     Speech(
       characterName: tre,
+      characterText:
+          "Tremble before the majesty of the Emperor! For we all walk in His immortal shadow!",
+    ),
+    Speech(
+      characterName: tre,
       characterText: "The Emperor Protects!",
     ),
     Speech(
@@ -124,7 +129,7 @@ class TextConstructor1 {
     ),
     Speech(
       characterName: catallia,
-      characterText: "Silver Dawn! This is the admiral. All ahead full!",
+      characterText: "Silver Dawn! This is the Admiral. All ahead full!",
     ),
   ];
 

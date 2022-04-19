@@ -1,3 +1,8 @@
+## 2.0.5
+
+- Added `pitch` and `speakingRate`. Thank you
+  [@Jignesh](https://github.com/JigneshPatel23)
+
 ## 2.0.4
 
 - Fix [#2](https://github.com/jonafeucht/Flutter-WaveNet-API/issues/2)

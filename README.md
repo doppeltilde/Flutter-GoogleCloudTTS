@@ -7,9 +7,6 @@ A simple wrapper for Google's
 available voices and convert your text to a mp3 by providing your API key,
 language code and voicename.
 
-This is a fork of https://pub.dartlang.org/packages/text_to_speech_api which
-fixes stuff.
-
 ## Usage
 
 - add the package as a dependency to your `pubspec.yaml` file:
@@ -18,28 +15,36 @@ fixes stuff.
 dependencies:
   flutter:
     sdk: flutter
-  wavenet: ^2.0.4
+  wavenet: ^2.0.5
 ```
 
-- Initialize the TextToSpeechService (optional: provide your api key)
+- Initialize the TextToSpeechService:
 
 ```dart
 TextToSpeechService service = TextToSpeechService('sample api key');
 ```
 
-- List the available voices (no api key required)
+- List the available voices:
 
 ```dart
 await service.availableVoices();
 ```
 
-- Convert your text to a File object (api key required)
+They can also be found here: https://cloud.google.com/text-to-speech/docs/voices
+
+- Convert your text to a File object (**api key required**):
 
 ```dart
 File mp3 = await service.textToSpeech(
   text: 'Hello World',
-  voiceName: 'de-DE-Wavenet-D',
+  voiceName: 'en-GB-Wavenet-F',
   audioEncoding: 'MP3',
-  languageCode: 'de-DE'
+  languageCode: 'en-GB'
+  pitch: 0.0,
+  speakingRate: 1.0,
 );
 ```
+
+## Credits
+
+This is a fork of https://pub.dartlang.org/packages/text_to_speech_api.
