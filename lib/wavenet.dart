@@ -3,19 +3,20 @@ library text_to_speech_api;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
 const BASE_URL = 'https://texttospeech.googleapis.com/v1/';
+var client = HttpClient();
 
 class FileService {
   static Future<String> get _localPath async {
+    // Returns the path to the system's temporary directory
     final directory = await getTemporaryDirectory();
     return directory.path;
   }
 
   static Future<File> createAndWriteFile(String filePath, content) async {
+    // Creates a new file in the temporary directory and writes the given content to it
     final path = await _localPath;
     final file = File('$path/$filePath');
     await file.writeAsBytes(content);
@@ -38,33 +39,38 @@ class TextToSpeechService {
   TextToSpeechService([this._apiKey]);
 
   Future<File> _createMp3File(AudioResponse response) async {
+    // Creates an MP3 file from the given audio response
     String id = new DateTime.now().millisecondsSinceEpoch.toString();
     String fileName = '$id.mp3';
 
-    // Decode audio content to binary format and create mp3 file
+    // Decodes the audio content to binary format and creates an MP3 file
     var bytes = base64.decode(response.audioContent!);
     return FileService.createAndWriteFile(fileName, bytes);
   }
 
   _getApiUrl(String endpoint) {
+    // Returns the API URL for the given endpoint
     return Uri.parse('$BASE_URL$endpoint?key=$_apiKey');
   }
 
-  _getResponse(Future<http.Response> request) {
-    return request.then((response) {
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        return jsonDecode(response.body);
-      }
-      throw (jsonDecode(response.body));
-    });
+  Future<Map<String, dynamic>> _getResponse(
+      Future<HttpClientRequest> request) async {
+    // Sends the given request and returns the response body if the status code is 200, otherwise throws an error
+    final req = await request;
+    final res = await req.close();
+    if (res.statusCode == 200) {
+      return jsonDecode(await res.transform(utf8.decoder).join());
+    }
+    throw (jsonDecode(await res.transform(utf8.decoder).join()));
   }
 
   Future availableVoices() async {
+    // Gets a list of available voices
     const endpoint = 'voices';
-    Future request = http.get(_getApiUrl(endpoint));
+    final request = client.getUrl(_getApiUrl(endpoint));
     try {
-      await _getResponse(request.then((value) => value as http.Response));
+      // Sends the request and returns the response body
+      await _getResponse(request.then((value) => value));
     } catch (e) {
       throw (e);
     }
@@ -94,7 +100,10 @@ class TextToSpeechService {
     double pitch = 0.0,
     double speakingRate = 1.0,
   }) async {
+    // Converts text to speech
     const endpoint = 'text:synthesize';
+
+    // Constructs the request body
     final bodyMap = <String, dynamic>{
       "input": {
         "text": text,
@@ -110,16 +119,29 @@ class TextToSpeechService {
       },
     };
 
-    String body = jsonEncode(bodyMap);
-    Future request = http.post(_getApiUrl(endpoint), body: body);
+    final request = await client.postUrl(_getApiUrl(endpoint))
+      // Set the content type to JSON
+      ..headers.contentType = ContentType.json
+      // Write the request body to the request
+      ..write(jsonEncode(bodyMap));
 
     try {
-      var response =
-          await _getResponse(request.then((value) => value as http.Response));
-      AudioResponse audioResponse = AudioResponse.fromJson(response);
-      return _createMp3File(audioResponse);
+      // Send the request and get the response
+      final response = await request.close();
+      if (response.statusCode == 200) {
+        // If the status code is 200, process the response
+        final audioResponse = AudioResponse.fromJson(
+            jsonDecode(await response.transform(utf8.decoder).join()));
+        return _createMp3File(audioResponse);
+      }
+      // If the status code is not 200, throw an error
+      throw (jsonDecode(await response.transform(utf8.decoder).join()));
     } catch (e) {
+      // Catch any errors that occur while sending the request or processing the response
       throw (e);
+    } finally {
+      // Close the client when we are done
+      client.close();
     }
   }
 }

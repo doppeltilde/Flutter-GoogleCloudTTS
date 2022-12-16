@@ -1,6 +1,6 @@
 name: wavenet
 description: A simple wrapper for accessing Google's Text-To-Spech API and converting the results to MP3 files.
-version: 2.0.5
+version: 2.0.6
 homepage: https://github.com/jonafeucht/Flutter-WaveNet-API
 repository: https://github.com/jonafeucht/Flutter-WaveNet-API
 
@@ -12,8 +12,10 @@ dependencies:
   flutter:
     sdk: flutter
 
-  http: ">=0.13.4 <=1.0.0"
-  path_provider: ">=2.0.9 <=3.0.0"
+  path_provider: ">=2.0.11 <=3.0.0"
+
+dev_dependencies:
+  test: ">=1.22.1 <=2.0.0"
 
 flutter:
 
