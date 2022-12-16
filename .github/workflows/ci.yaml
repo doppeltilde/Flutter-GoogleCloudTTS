@@ -27,6 +27,8 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+        env:
+          GOOGLE_CLOUD_API_KEY: ${{ secrets.GOOGLE_CLOUD_API_KEY }}
       - run: flutter pub get
       - run: flutter build appbundle
 
@@ -43,6 +45,8 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+        env:
+          GOOGLE_CLOUD_API_KEY: ${{ secrets.GOOGLE_CLOUD_API_KEY }}
       - run: flutter pub get
       - run: flutter build ios --release --no-codesign
       
