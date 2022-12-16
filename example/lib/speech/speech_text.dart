@@ -4,7 +4,7 @@ class TextConstructor1 {
   int textNumber = 0;
 
   static const mc = "MC";
-  static const severin = "Captain severin";
+  static const severin = "Captain Severin";
   static const catallia = "Admiral Venesca Catallia";
   static const razim = "Major Razim";
   static const tre = "Commodore Trevaux";

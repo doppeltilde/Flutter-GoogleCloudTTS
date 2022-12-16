@@ -4,9 +4,13 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:example/speech/speech_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wavenet/wavenet.dart';
 
-void main() => runApp(const MyApp());
+Future<void> main() async {
+  await dotenv.load();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -36,7 +40,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final textConstructor = TextConstructor1();
   final TextToSpeechService _service =
-      TextToSpeechService("AIzaSyA1h7D3WEoCiAnqrN0BWX2mkyFcC1rO3tM");
+      TextToSpeechService(dotenv.get("GOOGLE_CLOUD_API_KEY"));
   final audioPlayer = AudioPlayer();
 
   /// https://cloud.google.com/text-to-speech/docs/voices
@@ -44,6 +48,39 @@ class _MyHomePageState extends State<MyHomePage> {
   getAudioPlayer(file) {
     audioPlayer.play(DeviceFileSource(file));
   }
+
+  List<Map<String, dynamic>> voices = [
+    {
+      "name": "Admiral Venesca Catallia",
+      "voiceName": "en-US-Wavenet-C",
+      "languageCode": "en-EN",
+      "pitch": -2.0,
+      "speakingRate": 1.25,
+      "audioEncoding": "LINEAR16"
+    },
+    {
+      "name": "Major Razim",
+      "voiceName": "en-AU-Wavenet-D",
+      "languageCode": "en-AU",
+      "audioEncoding": "LINEAR16"
+    },
+    {
+      "name": "Captain Severin",
+      "voiceName": "en-AU-Wavenet-J",
+      "languageCode": "en-EN",
+      "pitch": 8.0,
+      "speakingRate": 1.4,
+      "audioEncoding": "LINEAR16",
+    },
+    {
+      "name": "Commodore Trevaux",
+      "voiceName": "en-AU-Wavenet-J",
+      "languageCode": "en-EN",
+      "pitch": -7.0,
+      "speakingRate": 1.2,
+      "audioEncoding": "LINEAR16",
+    },
+  ];
 
   _playDemo() async {
     setState(() {
@@ -56,63 +93,21 @@ class _MyHomePageState extends State<MyHomePage> {
     if (kDebugMode) {
       print(textConstructor.getCharacterName());
     }
-    switch (textConstructor.getCharacterName()) {
-      case "Admiral Venesca Catallia":
-        File file = await _service.textToSpeech(
-          text: textConstructor.getCharacterText().toString(),
-          voiceName: "en-US-Wavenet-C",
-          languageCode: "en-EN",
-          pitch: -2,
-          speakingRate: 1.25,
-          audioEncoding: "LINEAR16",
-        );
+    Map<String, dynamic> voiceOptions = voices.firstWhere(
+      (voice) => voice["name"] == textConstructor.getCharacterName(),
+      orElse: () => voices.first,
+    );
 
-        getAudioPlayer(file.path);
-        break;
-      case "Major Razim":
-        File file = await _service.textToSpeech(
-          text: textConstructor.getCharacterText().toString(),
-          voiceName: "en-AU-Wavenet-D",
-          languageCode: "en-AU",
-          audioEncoding: "LINEAR16",
-        );
-        getAudioPlayer(file.path);
-        break;
-      case "Captain severin":
-        File file = await _service.textToSpeech(
-          text: textConstructor.getCharacterText().toString(),
-          voiceName: "en-US-Wavenet-J",
-          languageCode: "en-EN",
-          pitch: 10,
-          speakingRate: 1.4,
-          audioEncoding: "ALAW",
-        );
+    File file = await _service.textToSpeech(
+      text: textConstructor.getCharacterText().toString(),
+      voiceName: voiceOptions["voiceName"],
+      languageCode: voiceOptions["languageCode"],
+      pitch: voiceOptions["pitch"],
+      speakingRate: voiceOptions["speakingRate"],
+      audioEncoding: voiceOptions["audioEncoding"],
+    );
 
-        getAudioPlayer(file.path);
-        break;
-      case "Commodore Trevaux":
-        File file = await _service.textToSpeech(
-          text: textConstructor.getCharacterText().toString(),
-          voiceName: "en-GB-Wavenet-D",
-          languageCode: "en-GB",
-          audioEncoding: "LINEAR16",
-          pitch: -7,
-          speakingRate: 1.2,
-        );
-
-        getAudioPlayer(file.path);
-        break;
-      default:
-        File file = await _service.textToSpeech(
-          text: textConstructor.getCharacterText().toString(),
-          voiceName: "en-AU-Wavenet-D",
-          languageCode: "en-AU",
-          audioEncoding: "MP3",
-          pitch: -7,
-        );
-
-        getAudioPlayer(file.path);
-    }
+    getAudioPlayer(file.path);
   }
 
   @override

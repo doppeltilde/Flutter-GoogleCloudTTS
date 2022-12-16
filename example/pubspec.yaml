@@ -12,9 +12,11 @@ dependencies:
     sdk: flutter
   wavenet:
     path: ../
-  audioplayers: ^1.0.0-rc.1
+  audioplayers: ^1.1.1
   flutter_lints: ^1.0.4
   cupertino_icons: ^1.0.4
+  flutter_dotenv: ^5.0.2
+
 
 dev_dependencies:
   flutter_test:
@@ -22,3 +24,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - .env
+
