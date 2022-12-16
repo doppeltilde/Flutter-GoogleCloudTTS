@@ -139,9 +139,6 @@ class TextToSpeechService {
     } catch (e) {
       // Catch any errors that occur while sending the request or processing the response
       throw (e);
-    } finally {
-      // Close the client when we are done
-      client.close();
     }
   }
 }
