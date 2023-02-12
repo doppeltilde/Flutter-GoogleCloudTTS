@@ -3,7 +3,7 @@
 [![pub package](https://img.shields.io/pub/v/wavenet.svg)](https://pub.dartlang.org/packages/wavenet)
 
 A simple wrapper for Google's
-[Text-To-Spech API](https://cloud.google.com/text-to-speech). Simply list the
+[Text-To-Speech API](https://cloud.google.com/text-to-speech). Simply list the
 available voices and convert your text to a mp3 by providing your API key,
 language code and voicename.
 
